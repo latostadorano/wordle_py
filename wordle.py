@@ -2,7 +2,17 @@ import random
 from spellchecker import SpellChecker
 spell = SpellChecker(language='es')
 
-print(random.choice([word for word in spell]))
+
+def choose_word():
+    random_word = ''
+    while len(random_word) != 5:
+        random_word = random.choice([word for word in spell])
+        if len(random_word) == 5:
+            game_word = random_word
+            print(game_word)
+
+
+choose_word()
 
 
 def word_exists(userWord):

@@ -1,13 +1,21 @@
+# Check words in spanish
+# Function for number of tries (max 5)
+
 import random
 from spellchecker import SpellChecker
 spell = SpellChecker(language='es')
 
 letters_playing = {'in_word': [], 'not_in_word': []}
+counter = 0
 
 
-def play():
-    userWord = input('Ingresa una palabra de 5 letras: ')
-    word_exists(userWord)
+def play(counter):
+    #print('Counter = ' + str(counter))
+    if counter < 5:
+        userWord = input('Ingresa una palabra de 5 letras: ')
+        word_exists(userWord, counter)
+    elif counter == 5:
+        print('💔 You loose 👎 Try again!')
 
 
 def choose_word():
@@ -22,20 +30,21 @@ def choose_word():
 game_word = choose_word()
 
 
-def word_exists(userWord):
+def word_exists(userWord, counter):
     word = userWord.lower()
     check = spell.known([word])
     if word in check and len(word) == 5:
-        print('* ' + word.title() + ' is playing.')
-        results(word, game_word)
+        print('🔹 ' + word.title() + ' is playing.')
+        results(word, game_word, counter)
     else:
-        print(word.upper() + ' is not a valid word')
-        play()
+        print('⚠️  ' + word.title() + ' is not a valid word')
+        print('')
+        play(counter)
 
 
-def results(word, game_word):
+def results(word, game_word, counter):
     if word == game_word:
-        print('YOU WON!')
+        print('YOU WON! ✨')
     else:
         result_word = ''
         in_word = ''
@@ -64,7 +73,8 @@ def results(word, game_word):
         print('Letters in word: ' + in_word)
         print('Letters not in word: ' + not_in_word)
         print(' ')
-        play()
+        counter += 1
+        play(counter)
 
 
-play()
+play(counter)

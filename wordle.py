@@ -2,6 +2,13 @@ import random
 from spellchecker import SpellChecker
 spell = SpellChecker(language='es')
 
+letters_playing = {'in_word': [], 'not_in_word': []}
+
+
+def play():
+    userWord = input('Ingresa una palabra de 5 letras: ')
+    word_exists(userWord)
+
 
 def choose_word():
     random_word = ''
@@ -19,33 +26,45 @@ def word_exists(userWord):
     word = userWord.lower()
     check = spell.known([word])
     if word in check and len(word) == 5:
-        print(word.upper() + ' is playing')
-        play(word, game_word)
+        print('* ' + word.title() + ' is playing.')
+        results(word, game_word)
     else:
         print(word.upper() + ' is not a valid word')
+        play()
 
 
-def play(word, game_word):
+def results(word, game_word):
     if word == game_word:
-        print('You won!')
+        print('YOU WON!')
     else:
         result_word = ''
-        letters_in_word = ''
-        letters_not_in_word = ''
+        in_word = ''
+        not_in_word = ''
+
         for i in range(len(word)):
             if word[i] == game_word[i]:
-                result_word = result_word + game_word[i].upper()
+                result_word = result_word + game_word[i].upper() + ' '
             elif word[i] in game_word:
-                result_word += "_"
-                letters_in_word += word[i]
+                result_word += "_"+' '
+                if word[i] not in letters_playing['in_word']:
+                    letters_playing['in_word'].append(word[i])
             elif word[i] not in game_word:
-                result_word += "_"
-                letters_not_in_word += word[i]
+                result_word += "_"+' '
+                if word[i] not in letters_playing['not_in_word']:
+                    letters_playing['not_in_word'].append(word[i])
+
         print(result_word)
-        print('Letters in word: ' + letters_in_word)
-        print('Letters not in word: ' + letters_not_in_word)
+        for value in letters_playing['in_word']:
+            in_word += value
+        in_word = ', '.join(sorted(in_word))
+        for i in letters_playing['not_in_word']:
+            not_in_word += i
+        not_in_word = ', '.join(sorted(not_in_word))
+
+        print('Letters in word: ' + in_word)
+        print('Letters not in word: ' + not_in_word)
         print(' ')
+        play()
 
 
-userWord = input('Ingresa una palabra de 5 letras: ')
-word_exists(userWord)
+play()

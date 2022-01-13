@@ -7,6 +7,7 @@ spell = SpellChecker(language='es')
 
 letters_playing = {'in_word': [], 'not_in_word': []}
 counter = 0
+tries = ['📗', '📘', '📒', '📙', '📕']
 
 
 def play(counter):
@@ -34,7 +35,8 @@ def word_exists(userWord, counter):
     word = userWord.lower()
     check = spell.known([word])
     if word in check and len(word) == 5:
-        print('🔹 ' + word.title() + ' is playing.')
+        print('')
+        print(tries[counter] + ' ' + word.title() + ' is playing.')
         results(word, game_word, counter)
     else:
         print('⚠️  ' + word.title() + ' is not a valid word')
